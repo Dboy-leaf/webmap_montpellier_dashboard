@@ -1,7 +1,7 @@
 
-// ==========================================================================
-// 1. INITIALISATION ET PANES
-// ==========================================================================
+
+// 1. INITIALISATION
+
 var map = L.map('map', { preferCanvas: true }).setView([43.61, 3.87], 13);
 
 map.createPane('paneCadastre').style.zIndex = 400;
@@ -12,11 +12,11 @@ map.createPane('paneCommune').style.zIndex = 650;
 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map);
 
-var coucheCommune, coucheQuartiers, coucheIlots, coucheRoutes, coucheBati, coucheCadastre;
+var coucheCommune, coucheQuartiers, coucheIlots, coucheRoutes, coucheBati, coucheCadastre; // Initialisation des variables
 
-// ==========================================================================
-// 2. FONCTIONS DE STYLE (Synchronisées avec la légende)
-// ==========================================================================
+
+// 2. FONCTIONS DE STYLE
+
 
 function styleCommune() {
     return { color: "#000", weight: 4, fillOpacity: 0, dashArray: "5,10", pane: 'paneCommune' };
@@ -27,14 +27,14 @@ function styleQuartiers(f) {
     return { fillColor: c[f.properties.type] || "#686868", weight: 2, color: 'white', fillOpacity: 0.5, pane: 'paneQuartiers' };
 }
 
-// 5 CLASSES D'ILOTS
+
 function styleIlots(f) {
     var d = f.properties.NUMPOINTS || f.properties.NUMPOINT;
     var col = d > 80 ? '#d53e4f' : d > 60 ? '#f46d43' : d > 40 ? '#fdae61' : d > 20 ? '#abdda4' : '#66c2a5';
     return { fillColor: col, weight: 0, fillOpacity: 0.8 };
 }
 
-// 5 CLASSES DE ROUTES
+
 function styleRoutes(f) {
     var l = f.properties.LARGEUR || 1;
     var col, w;
@@ -46,16 +46,16 @@ function styleRoutes(f) {
     return { color: col, weight: w, opacity: 0.9, lineCap: 'round', pane: 'paneRoutes' };
 }
 
-// 6 CLASSES DE BÂTI
+
 function styleBati(f) {
     var h = f.properties.height || 0;
     var col = h > 30 ? '#d53e4f' : h > 20 ? '#f46d43' : h > 15 ? '#fdae61' : h > 10 ? '#e6f598' : h > 5 ? '#66c2a5' : '#3288bd';
     return { fillColor: col, fillOpacity: 0.9, weight: 0, pane: 'paneBati' };
 }
 
-// ==========================================================================
+
 // 3. LOGIQUE D'AFFICHAGE
-// ==========================================================================
+
 
 function rafraichirAffichage() {
     var z = map.getZoom();
@@ -81,9 +81,9 @@ function rafraichirAffichage() {
     }
 }
 
-// ==========================================================================
-// 4. LÉGENDE (Totalement fonctionnelle et synchronisée)
-// ==========================================================================
+
+// 4. LÉGENDE
+
 
 function mettreAJourLegende(zoom) {
     var div = document.getElementById('contenu-legende');
@@ -130,9 +130,10 @@ function mettreAJourLegende(zoom) {
     }
 }
 
-// ==========================================================================
-// 5. CHARGEMENT ET ÉVÉNEMENTS
-// ==========================================================================
+
+
+// 5. CHARGEMENT DES DONNEES
+
 
 fetch('GeoJson_data/Montpellier_com.geojson').then(r => r.json()).then(data => { 
     coucheCommune = L.geoJSON(data, { style: styleCommune }).addTo(map); 
